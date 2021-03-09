@@ -1,0 +1,241 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    {% load static %}
+	<link rel="stylesheet" type="text/css" href="{%static 'shop/css/prodview1.css'%}">
+</head>
+
+<body>
+
+{% load static %}
+
+	<video autoplay muted loop id="myVideo">
+	  <source src="{% static 'shop/images/video.mp4' %}" type="video/mp4">
+	 </video>
+	 <div class="contents">
+		 <h2> Select Meal Time</h2>
+ <table align="center" width="100%">
+       <tr>
+  		 <td id="lunch" align="center" width="20%">
+          <fieldset><i class="fas fa-sun"></i></fieldset>
+        </td>
+        <td id="dinner" width="20%" align="center">
+          <fieldset><i class="fas fa-moon"></i></fieldset>
+        </td>
+        <td id="both" width="20%" align="center">
+				<fieldset><i class="fas fa-sun"></i><i class="fas fa-moon"></i></fieldset>
+			</td>
+      </tr>
+			<tr>
+	 		 <td align="center">Lunch</td>
+	 		 <td align="center">Dinner</td>
+	 		 <td align="center">Both</td>
+	 	 </tr>
+</table>
+
+	<h2> Select Meal Duration</h2>
+<table align="center" width="100%">
+		<tr>
+
+		 <td id="week" width="20%" align="center">
+			 <fieldset>1 <br> Week !</fieldset>
+		 </td>
+		 <td id="onem" width="20%" align="center">
+		 <fieldset>1 <br> Month !</fieldset>
+	 </td>
+	 <td id="twom" align="center" width="20%">
+			<fieldset>2 <br> Months !</fieldset>
+		</td>
+	 </tr>
+ </table>
+
+ <h2> No. of Meals per Week </h2>
+<table align="center" width="100%">
+	 <tr>
+	 <td id="sixweek" align="center" width="20%">
+			<fieldset> Monday<br> To <br> Saturday</fieldset>
+		</td>
+		<td id="sevenweek" width="20%" align="center">
+			<fieldset> Monday<br>To<br> Sunday</fieldset>
+		</td>
+
+	</tr>
+</table>
+	 <h2> Quantity </h2>
+	<table align="center" width="100%">
+		 <tr>
+		 <td id="quaone" align="center" width="20%">
+				<fieldset> 1 <br></fieldset>
+			</td>
+			<td id="quatwo" width="20%" align="center">
+				<fieldset>2 <br></fieldset>
+			</td>
+			<td id="quathree" width="20%" align="center">
+			<fieldset>3 <br></fieldset>
+		</td>
+		</tr>
+</table>
+
+<h2> Order Date </h2>
+
+<form method="get" action="/shop/checkout/">{% csrf_token %}
+	<input type="text" id="lunch1" value="Dinner" name="lunch1" style="display : none" required>
+			 <input type="text" id="mealduration" value="Dinner" name="mealduration" style="display : none"required>
+			 <input type="text" id="noofmeal" value="Dinner" name="noofmeal"style="display : none" required>
+			 <input type="text" id="quantity" value="Dinner" name="quantity" style="display : none" required>
+			 <input type="text" id="grandtotal" value="" name="grandtotal" style="display : none" required>
+			 <input type="date" id="date" name="date" required>
+			<button type="submit" class="btn btn-primary" onclick="parvalue()">Sumbit</button>
+
+</form>
+</div>
+<div id="calc">
+	<h2 style="text-align: center;color: white;">ITEM SELECTED</h2>
+	<div class="data">
+		<p style="color:white; text-align: center;" id="time"></p>
+		<pre style="color:white" id="duration"></pre>
+		<pre style="color:white" id="days"></pre>
+		<pre style="color:white" id="quan"></pre>
+		<pre style="color:white" id="price"></pre>
+		<pre style="color:white" id="tax"></pre>
+		<pre style="color:white" id="del"></pre>
+		<pre style="color:white" id="total"></pre>
+	</div>
+</div>
+<script>
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+}
+
+console.log(cart);
+<!--let price;-->
+<!--if ($.isEmptyObject(cart))-->
+<!--{-->
+<!--  price=0;-->
+<!--}-->
+<!--else{-->
+<!--for (item in cart) {-->
+<!--price= cart[item][2];-->
+<!--}-->
+<!--}-->
+
+	var durationnn;
+	var qunatityyy;
+	var m=1;
+	document.getElementById('lunch').addEventListener('click',function(){
+	    document.getElementById('lunch1').value= 'lunch';
+		document.getElementById('calc').style.display = "block";
+		document.getElementById('time').innerHTML = "Details For Lunch<hr>";
+		console.log('clicked');
+	});
+	document.getElementById('dinner').addEventListener('click',function(){
+	    document.getElementById('lunch1').value= 'dinner';
+		document.getElementById('calc').style.display = "block";
+		document.getElementById('time').innerHTML = "Details For dinner<hr>";
+	})
+	document.getElementById('both').addEventListener('click',function(){
+	    document.getElementById('lunch1').value= 'both';
+		document.getElementById('calc').style.display = "block";
+		document.getElementById('time').innerHTML = "Details For lunch <br><hr> Details For dinner<hr>";
+	})
+	document.getElementById('week').addEventListener('click',function(){
+		document.getElementById('mealduration').value= '7';
+		document.getElementById('duration').innerHTML = "Duration                     One week";
+		m=1;
+	});
+	document.getElementById('onem').addEventListener('click',function(){
+		document.getElementById('mealduration').value= '1 month';
+		document.getElementById('duration').innerHTML = "Duration                     One month";
+		m=4;
+	});
+	document.getElementById('twom').addEventListener('click',function(){
+	document.getElementById('mealduration').value= '2 month';
+		document.getElementById('duration').innerHTML = "Duration                     Two month";
+		m=8;
+	});
+	document.getElementById('sixweek').addEventListener('click',function(){
+		document.getElementById('noofmeal').value= '6 days';
+		document.getElementById('days').innerHTML = "Week Type                  Six Days";
+		durationnn=6;
+	})
+	document.getElementById('sevenweek').addEventListener('click',function(){
+		document.getElementById('noofmeal').value= '7 days';
+		document.getElementById('days').innerHTML = "Week Type                  Seven Days";
+		durationnn=7;
+	})
+	document.getElementById('quaone').addEventListener('click',function(){
+		document.getElementById('quantity').value= 'one';
+		document.getElementById('quan').innerHTML = "Quantity                     One";
+		qunatityyy=1;
+		for (item in cart){
+		p = cart[item][2];
+		var price=p*durationnn*qunatityyy*m;
+		var tax=Math.floor(price/6);
+		var del=30*durationnn;
+		var total=price+tax+del
+		document.getElementById('price').innerHTML = `Price                          ${price}`;
+		document.getElementById('tax').innerHTML = `Tax                            ${tax}`;
+		document.getElementById('del').innerHTML = `Delivery Charge          ${del}<hr>`;
+		document.getElementById('grandtotal').value = total;
+		document.getElementById('total').innerHTML = `Grand Total    <span id="gtotal">${total}</span>`;
+		}
+	})
+	document.getElementById('quatwo').addEventListener('click',function(){
+	document.getElementById('quantity').value= 'two';
+		document.getElementById('quan').innerHTML = "Quantity                     Two";
+		qunatityyy=2;
+		for (item in cart){
+		p = cart[item][2];
+		var price=p*durationnn*qunatityyy*m;
+		var tax=Math.floor(price/6);
+		var del=30*durationnn;
+		var total=price+tax+del
+		document.getElementById('price').innerHTML = `Price                          ${price}`;
+		document.getElementById('tax').innerHTML = `Tax                            ${tax}`;
+		document.getElementById('del').innerHTML = `Delivery Charge          ${del}<hr>`;
+		document.getElementById('grandtotal').value = total;
+		document.getElementById('total').innerHTML = `Grand Total  <span id="gtotal">${total}</span>`;
+		}
+	})
+	document.getElementById('quathree').addEventListener('click',function(){
+	document.getElementById('quantity').value= 'three';
+		document.getElementById('quan').innerHTML = "Quantity                     Three";
+		qunatityyy=3;
+		for (item in cart){
+		p = cart[item][2];
+		var price=p*durationnn*qunatityyy*m;
+		var tax=Math.floor(price/6);
+		var del=30*durationnn;
+		var total=price+tax+del
+		document.getElementById('price').innerHTML = `Price                          ${price}`;
+		document.getElementById('tax').innerHTML = `Tax                            ${tax}`;
+		document.getElementById('del').innerHTML = `Delivery Charge          ${del}<hr>`;
+		document.getElementById('grandtotal').value = total;
+		document.getElementById('total').innerHTML = `Grand Total <span id="gtotal">${total}</span> `;
+		}
+	})
+	function parvalue(){
+	var d = document.getElementById("mealduration").value;
+	localStorage.setItem("mealduration",d);
+
+	var n = document.getElementById("noofmeal").value;
+	localStorage.setItem("noofmeal",n);
+
+	var q = document.getElementById("quantity").value;
+	localStorage.setItem("quantity",q);
+
+	var g = document.getElementById("grandtotal").value;
+	localStorage.setItem("total",g);
+
+	var da = document.getElementById("date").value;
+	localStorage.setItem("date",da);
+	return false;
+	}
+</script>
+</body>
+</html>

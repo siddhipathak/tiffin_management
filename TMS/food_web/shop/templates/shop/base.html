@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{%static 'shop/css/index.css'%}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<title>{% block title %} {% endblock %}</title>
+
+<style>
+{% block css %} {% endblock %}
+</style>
+</head>
+<body>
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Tiffin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/#Con/">Contact Us</a>
+        </li>
+          <li class="nav-item">
+<a class="nav-link" href="/shop/tracker">tracker</a>
+</li>
+        {% if user.is_authenticated %}
+        <div class="profile-box">
+            <a href="/profile/">
+                <img class = 'profile-image' src="{% static 'shop/images/profile-icon.svg' %}" alt="">
+            </a>
+          <class="User-name"><a href="/profile/">{{user.username}}</a>
+        </div>
+        <!--<li>Hello, {{user.username}}</li>-->
+        <li class="nav-item">
+          <a class="nav-link" href="/Logout/">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/SignUp/">Login</a>
+        </li>
+        {% endif %}
+      </ul>
+      <form method='get' action='/shop/search/' class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+        <button type="button" class="btn btn-secondary mx-2" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Vivamus
+sagittislacusvelauguelaoreetrutrumfaucibus.">Cart(<span id="cart">0</span>)</button>
+    </div>
+  </nav>
+
+{% block body %} {% endblock %}
+<footer>
+        <div class="main-content">
+         <div class="left box">
+          <h2>About US</h2>
+           <div class="content">
+             <p>Lorefyfyif yfydolu6dluf iyufyufydflyif fyuufjfvuk</p>
+             <div class="social">
+               <a href="#"><span class="fab fa-facebook-f"></span></a>
+               <a href="#"><span class="fab fa-instagram"></span></a>
+               <a href="#"><span class="fab fa-twitter"> </span></a>
+               <a href="#"><span class="fab fa-youtube"> </span></a>
+               </div>
+           </div>
+         </div>
+
+          <div class="center box">
+            <h2>Address</h2>
+            <div class="content">
+              <div class="place">
+                <span class="fas fa-map-marker-alt"></span>
+                 <span class="text">pune,maharashtra</span>
+              </div>
+
+              <div class="phone">
+                <span class="fas fa-phone-alt"></span>
+                 <span class="text">pune,maharashtra</span>
+              </div>
+
+              <div class="email">
+                <span class="fas fa-envelope"></span>
+                 <span class="text">tiffin@gmail.com</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="right box">
+            <h2>Admin LogIn</h2>
+            <div class="content">
+              <button type="button" class="btn btn-light">Click Me!</button>
+            </div>
+          </div>
+        </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+{% block js %} {% endblock %}
+</body>
+</html>
+

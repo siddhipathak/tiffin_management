@@ -1,0 +1,114 @@
+{% extends 'shop/base.html' %}
+{% block title%} Checkout - Tiffin{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="col my-4">
+        <h2>Step 1 - My Cart</h2>
+        <div class="my-4">
+            <ul class="list-group" id="items">
+            </ul>
+            <li class="list-group-item d-flex justify-content-between align-items-center" >Meal Duration <span class="badge badge-light"  id="result-mealduration"></span> </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center" >No of Meals <span class="badge badge-light"  id="result-noofmeal"></span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center" >Quantity <span class="badge badge-light"  id="result-quantity"></span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center" >Total<span class="badge badge-light"  id="result-total"></span></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center" >Date <span class="badge badge-light"  id="result-date"></span></li>
+
+        </div>
+    </div>
+    <div class="col my-4">
+        <h2>Step 2 - Enter Address & Other Details:</h2>
+        <form method="post" action="/shop/checkout/">{% csrf_token %}
+            <input type="hidden" name="itemsJson" id="itemsJson">
+            <input type="hidden" name="meal_duration" id="md">
+            <input type="hidden" name="no_of_meal" id="nom">
+            <input type="hidden" name="quantity_meal" id="quan">
+            <input type="hidden" name="meal_total" id="tot">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address1">Address</label>
+                <input type="text" class="form-control" id="address1" name="address1" placeholder="1234 Main St">
+            </div>
+            <div class="form-group">
+                <label for="address2">Address line 2</label>
+                <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" name="city">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="state">State</label>
+                    <input type="text" class="form-control" id="state" name="state" placeholder="Enter State">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="zip_code">Zip</label>
+                    <input type="text" class="form-control" id="zip_code" name="zip_code">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone">
+            </div>
+            <button type="submit" class="btn btn-primary">Place Order</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+}
+console.log(cart);
+var sum = 0;
+if ($.isEmptyObject(cart)) {
+    //if object is empty
+    mystr = `<p>Your cart is empty, please add some items to your cart before checking out!</p>`
+    $('#items').append(mystr);
+} else {
+    for (item in cart) {
+
+        let name = cart[item][1];
+        let qty = cart[item][0];
+        sum = sum + qty;
+        mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${name}
+                    <span class="badge badge-primary badge-pill">${qty}</span>
+                </li>`
+        $('#items').append(mystr);
+    }
+}
+document.getElementById('cart').innerHTML = sum;
+
+document.getElementById('result-mealduration').innerHTML = localStorage.getItem("mealduration");
+document.getElementById('result-noofmeal').innerHTML = localStorage.getItem("noofmeal");
+document.getElementById('result-quantity').innerHTML = localStorage.getItem("quantity");
+document.getElementById('result-total').innerHTML = localStorage.getItem("total");
+document.getElementById('result-date').innerHTML = localStorage.getItem("date");
+
+$('#itemsJson').val(JSON.stringify(cart));
+$('#md').val(localStorage.getItem("mealduration"));
+$('#nom').val(localStorage.getItem("noofmeal"));
+$('#quan').val(localStorage.getItem("quantity"));
+$('#tot').val(localStorage.getItem("total"));
+
+{% if thank %}
+alert("thanks for order {{id}}.");
+<!--document.location = "/shop";-->
+localStorage.clear();
+{% endif %}
+
+</script>
+{% endblock %}
